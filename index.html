@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pesan Cinta Aesthetic</title>
+
+    <!-- Font Aesthetic -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #ffdde1 0%, #ee9ca7 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(12px);
+            border-radius: 25px;
+            padding: 35px 25px;
+            box-shadow: 0 15px 40px rgba(255, 120, 150, 0.4);
+            animation: pop .5s ease forwards;
+            transform: scale(0.7);
+        }
+
+        @keyframes pop {
+            to {
+                transform: scale(1);
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        h1 {
+            font-size: 26px;
+            color: #d84a75;
+            margin-bottom: 15px;
+        }
+
+        .love-button {
+            font-size: 90px;
+            cursor: pointer;
+            animation: pulse 1.5s infinite;
+            text-shadow: 0 0 15px rgba(255, 100, 140, 0.7);
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.15);
+            }
+        }
+
+        .love-button:hover {
+            transform: scale(1.2);
+        }
+
+        .img-box {
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(255, 120, 150, 0.3);
+        }
+
+        .img-box img {
+            width: 100%;
+            transition: .3s;
+        }
+
+        .img-box img:hover {
+            transform: scale(1.08);
+        }
+
+        p {
+            font-size: 17px;
+            color: #5b3a46;
+            line-height: 1.6;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #ff9eb3 0%, #ff6f91 100%);
+            color: #fff;
+            border: none;
+            padding: 12px 35px;
+            border-radius: 50px;
+            font-size: 16px;
+            margin-top: 15px;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(255, 120, 150, 0.5);
+            transition: .3s;
+        }
+
+        .btn:hover {
+            transform: translateY(-4px);
+        }
+
+        .textarea-message {
+            width: 100%;
+            border-radius: 12px;
+            border: 2px solid #ffb3c6;
+            padding: 15px;
+            min-height: 120px;
+            font-size: 16px;
+            margin-top: 10px;
+            background: rgba(255, 240, 245, 0.8);
+            outline: none;
+        }
+
+        /* Floating hearts */
+        .hearts {
+            pointer-events: none;
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 20px;
+            animation: fall 8s linear infinite;
+            opacity: 0;
+            color: #ff7ea8;
+            text-shadow: 0 0 10px rgba(255, 150, 170, 0.8);
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-10vh);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(120vh);
+                opacity: 0;
+            }
+        }
+
+        /* Music button */
+        .music-control {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background: white;
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 27px;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(255, 120, 150, 0.5);
+            transition: .3s;
+            z-index: 20;
+        }
+
+        .music-control:hover {
+            transform: scale(1.1);
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="hearts" id="hearts"></div>
+
+    <div class="container">
+
+        <!-- SCREEN 1: LOVE BUTTON -->
+        <div class="card" id="startScreen">
+            <h1>💗 Ada Pesan Spesial Buat dirimuu💗💗💗</h1>
+            <div class="love-button" onclick="openMessage()">❤️</div>
+            <p style="margin-top: 10px; color:#7e5a67;">Klik love nya yaaa sayanggg...</p>
+        </div>
+
+        <!-- SCREEN 2: CARD PESAN -->
+        <div class="card hidden" id="contentScreen">
+            <h1 id="contentTitle"></h1>
+
+            <div class="img-box">
+                <img id="contentImage">
+            </div>
+
+            <p id="contentMessage"></p>
+
+            <button class="btn" onclick="nextContent()">Lanjut ➜</button>
+        </div>
+
+        <!-- SCREEN 3: FORM WA -->
+        <div class="card hidden" id="formScreen">
+            <h1>Kirim Pesan Balik 💌</h1>
+
+            <textarea class="textarea-message" id="balasan" placeholder="Tulis pesan bucinmu di sini..."></textarea>
+
+            <button class="btn" onclick="kirimWA()">📩 Kirim ke WhatsApp</button>
+        </div>
+
+    </div>
+
+    <!-- MUSIC BUTTON -->
+    <div class="music-control" onclick="toggleMusic()">
+        <span id="musicIcon">🔇</span>
+    </div>
+
+    <!-- AUDIO -->
+    <audio id="bgMusic" loop>
+        <source
+            src="https://rr3---sn-htgx20capjpq-jb3l.googlevideo.com/videoplayback?expire=1764536584&ei=qFwsad7OLJiDy_sPvauEqAU&ip=181.55.200.13&id=o-APO-MRLzQNwOyuk8Xl0ks81i8NT8WeJ2ZRIvRuz16F4_&itag=251&source=youtube&requiressl=yes&xpc=EgVo2aDSNQ%3D%3D&bui=AdEuB5TuVQ6El0peCvdoRS4TGWxm9W3QjMMur4QfquwKwEKETrpdP3q1f9Go3djWLpdTl0VLuD42WmUD&vprv=1&svpuc=1&mime=audio%2Fwebm&ns=eFdfiUM_qHMdL1A16AZ75ysQ&rqh=1&gir=yes&clen=3340320&dur=198.601&lmt=1758386136722523&keepalive=yes&lmw=1&fexp=51557447,51565116,51565681,51580970&c=TVHTML5&sefc=1&txp=5532534&n=3rsbZSnOaITe0Q&sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cxpc%2Cbui%2Cvprv%2Csvpuc%2Cmime%2Cns%2Crqh%2Cgir%2Cclen%2Cdur%2Clmt&sig=AJfQdSswRQIhAOufAtbPf1te8rVlAvdbIriS6Wg9UEYpitZw_8qHklNiAiAsVrNSa2e-yXdLLf51KLUxlYPZuPX-F5nHkWhq9rbHZQ%3D%3D&rm=sn-ja5gvjv-cvbe77s,sn-cvbed7e&rrc=79,104&req_id=7873b1717769a3ee&cmsv=e&rms=rdu,au&redirect_counter=2&cms_redirect=yes&ipbypass=yes&met=1764524929,&mh=Nl&mip=158.140.164.2&mm=29&mn=sn-htgx20capjpq-jb3l&ms=rdu&mt=1764524469&mv=m&mvi=3&pl=24&lsparams=ipbypass,met,mh,mip,mm,mn,ms,mv,mvi,pl,rms&lsig=APaTxxMwRQIhAMo0Rw0sGtbyqapCkI2SpCxgp2RPsrWcfSYtE6kKTlNfAiAhxK1iR3ThheTL70Nb4avv0PGJNfSQxWBDLbXe8NjX4w%3D%3D"
+            type="audio/mpeg">
+    </audio>
+
+    <script>
+        const konten = [
+            {
+                title: "Untuk kamu yang Tanzil Sayangii..",
+                image: "gambar1.jpg",
+                message: "selamatt ulang tahun myluvv💗💗💗"
+            },
+            {
+                title: "Untuk Kamu yang Tanzil Sayangii..",
+                image: "gambar2.jpg",
+                message: "semoga sehat selaluu, panjang umurr, rendah rezeki, dan di mudahkan segala urusannyaa...."
+            },
+            {
+                title: "Untuk Kamu yang Tanzil Sayangii..",
+                image: "gambar3.jpg",
+                message: "dalam satu tahun terakhir ini, banyak rintangan yang kita jalanii.."
+            },            
+            {
+                title: "Untuk Kamu yang Tanzil Sayangii..",
+                image: "gambar4.jpg",
+                message: "dibalik semua itu, mari kita jadikan ini pelajaran berharga untuk kita berduaaa..."
+            },
+            {
+                title: "Untuk Kamu yang Tanzil Sayangii..",
+                image: "gambar5.jpg",
+                message: "semuanya kita lewati bersamaa, terimakasih sudah tetap di samping tanzill..."
+            },
+            {
+                title: "Untuk Kamu yang Tanzil Sayangii..",
+                image: "gambar6.jpg",
+                message: "tanzil selaluu sayangg dirimuu💗💗💗"
+            }            
+        ];
+
+        let currentIndex = 0;
+
+        const nomorWA = "6281374670172";
+        const music = document.getElementById("bgMusic");
+        const icon = document.getElementById("musicIcon");
+        let isPlaying = false;
+
+        function openMessage() {
+            document.getElementById("startScreen").classList.add("hidden");
+            document.getElementById("contentScreen").classList.remove("hidden");
+
+            updateContent();
+            playMusic();
+        }
+
+        function updateContent() {
+            const c = konten[currentIndex];
+            document.getElementById("contentTitle").textContent = c.title;
+            document.getElementById("contentImage").src = c.image;
+            document.getElementById("contentMessage").textContent = c.message;
+        }
+
+        function nextContent() {
+            currentIndex++;
+
+            if (currentIndex >= konten.length) {
+                document.getElementById("contentScreen").classList.add("hidden");
+                document.getElementById("formScreen").classList.remove("hidden");
+                return;
+            }
+
+            updateContent();
+        }
+
+        function kirimWA() {
+            const msg = document.getElementById("balasan").value.trim();
+            if (!msg) {
+                alert("Tulis dulu pesannya yaaa sayanggg❤️");
+                return;
+            }
+
+            const pesan = encodeURIComponent(`Hai sayanggg...\n\nIni balasan akuu:\n"${msg}"`);
+
+            window.open(`https://wa.me/${nomorWA}?text=${pesan}`, "_blank");
+        }
+
+        function playMusic() {
+            music.play();
+            icon.textContent = "🔊";
+            isPlaying = true;
+        }
+
+        function toggleMusic() {
+            if (isPlaying) {
+                music.pause();
+                icon.textContent = "🔇";
+            } else {
+                music.play();
+                icon.textContent = "🔊";
+            }
+            isPlaying = !isPlaying;
+        }
+
+        function createHearts() {
+            const area = document.getElementById("hearts");
+
+            setInterval(() => {
+                const h = document.createElement("div");
+                h.classList.add("heart");
+                h.innerHTML = "💗";
+                h.style.left = Math.random() * 100 + "%";
+                h.style.fontSize = (Math.random() * 20 + 20) + "px";
+                h.style.animationDuration = (Math.random() * 3 + 5) + "s";
+                area.appendChild(h);
+
+                setTimeout(() => h.remove(), 9000);
+            }, 500);
+        }
+
+        createHearts();
+    </script>
+
+</body>
+
+</html>
